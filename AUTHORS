@@ -1,0 +1,14 @@
+* Frank DENIS <j at pureftpd dot org>
+* Eric Evans <eevans at sym-link dot com> - maintainer of Debian packages.
+* David H <dmalloc at users dot sf dot net> - maintainer of Fink packages.
+* Richard Bellamy <richard dot bellamy at virgin dot net> - helped a lot with
+Solaris portability.
+* Russell Mosemann - neutral mode and bug fixes.
+* Dean Gaudet <dean at arctic dot org> - EINTR handling, log exec errors,
+--passfile.
+* Steve Kehlet and Marcus Goller - fixed the bogus code that issued poisonous
+gratuitous ARP, and improved the behavior when multiple nodes are started
+with the same interval and skew.  Steve helped a lot on many things.
+* Tim Niemeyer <niemeyer at kdo dot de> - Ensure remastering works when the
+preferred master has its network connection flap.
+* Serve Sireskin - --ignoreifstate option.

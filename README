@@ -1,0 +1,251 @@
+
+                                 .:. UCARP .:.
+                        Documentation for version 1.5.2
+
+
+           ------------------------ BLURB ------------------------
+
+
+UCARP allows a couple of hosts to share common virtual IP addresses in order
+to provide automatic failover. It is a portable userland implementation of the
+secure and patent-free Common Address Redundancy Protocol (CARP, OpenBSD's
+alternative to the patents-bloated VRRP).
+
+Strong points of the CARP protocol are: very low overhead, cryptographically
+signed messages, interoperability between different operating systems and no
+need for any dedicated extra network link between redundant hosts.
+
+Home page is http://www.ucarp.org/
+
+
+        ------------------------ COMPILATION ------------------------
+
+
+libpcap (http://www.tcpdump.org/) must be installed on your system, with
+development files (headers).
+
+Then, follow the boring traditional procedure:
+
+./configure
+make install-strip
+
+For details, have a look at the INSTALL file.
+
+The software has been successfully tested on Linux 2.4, Linux 2.6, MacOS X,
+OpenBSD, MirBSD and NetBSD.
+
+
+        ------------------------ REQUIREMENTS ------------------------
+
+
+A couple of virtual hosts must be given:
+
+- A shared virtual IP, which will be dynamically answered by one alive host.
+Services that need high availability need to be assigned to that virtual IP.
+
+- A real IP address for each host.
+
+- A shared identifier for the virtual IP address, which is a number between 1
+and 255.
+
+- For each host : an advertisement interval, comprised of a base and skew value, 
+which is the frequency the host will tell the other one that it's still alive. 
+By default, base is 1 and skew is 0, which basically means one advertisement a 
+second. The protocol is very light, a tiny packet every second won't have any 
+noticeable impact on your network.
+
+- A shared password (that will never go plaintext to the network).
+
+- A script to bring the virtual address up when a host becomes the master.
+
+- Another script to bring the virtual address down when a host is no more the
+master.
+
+
+            ------------------------ USAGE ------------------------
+
+
+The server will usually be installed as : /usr/local/sbin/ucarp
+Everything is driven through command-line options.
+In order to see the list of available options, try : /usr/local/sbin/ucarp -h
+
+Better than a long technical discussion, here's a real-life setup example.
+
+Your company has an internal mail relay whose IP address is 10.1.1.252. Every
+user has configured his mail client with that host or IP address and the
+service must always be up and running without having to reconfigure every 
+user's mail client in case of a failure.
+
+Instead of assigning 10.1.1.252 to a particular mail server, you decide
+to use ucarp to allow two hosts to share this IP address.  Of course,
+only one server can answer for this address at a time, while the other
+sits idle.  However the other server will automatically become active in
+case the first one fails.  Thus you're providing a simple but powerful
+IP failover solution.
+
+So you set up two mail servers hosts with an identical configuration.
+Their real IP addresses are 10.1.1.1 and 10.1.1.2.
+
+First, we will create a script that brings the virtual IP address up. Let's
+save that file as /etc/vip-up.sh :
+
+#! /bin/sh
+/sbin/ip addr add 10.1.1.252/24 dev eth0
+
+Now another script to bring it down, /etc/vip-down.sh :
+
+#! /bin/sh
+/sbin/ip addr del 10.1.1.252/24 dev eth0
+
+Of course, anything can go in these scripts. For instance, you may want to add
+routes, to add something to log files or to send mail. And last, but not
+least, you can use a script that will connect to your switches and flush their
+ARP cache. Some users reported that transitions were way faster when also
+switching MAC addresses.
+
+The called scripts are passed arguments, in this order:
+
+<interface name> <virtual address> <optional extra parameter>
+
+For instance, as the is passed as the first argument to the called scripts,
+feel free to replace "eth0" with "$1" and 10.1.1.252 by "$2" in the previous
+examples.
+
+Don't forget to make those files executable :
+
+chmod +x /etc/vip-up.sh /etc/vip-down.sh
+
+Right. What we need now is an identifier for the virtual IP. Let's take "42".
+And we also need a password. Let's take "love".
+
+Now, on the first host (whoose real IP is 10.1.1.1), run :
+
+/usr/local/sbin/ucarp -v 42 -p love -a 10.1.1.252 -s 10.1.1.1 &
+
+On the second host, whose real IP is 10.1.1.2, run :
+
+/usr/local/sbin/ucarp -v 42 -p love -a 10.1.1.252 -s 10.1.1.2 &
+
+You should see that one of those hosts quickly becomes the master, and the
+other one the backup. Related scripts are spawned on change.
+
+Now unplug the master. After a few seconds, the other host becomes the new
+master.
+
+
+------------------------ MASTER ELECTION PROCESS ------------------------
+
+
+When ucarp first runs, it starts as a backup and listens to the network
+to determine if it should become the master.  If at any time more than
+three times the node's advertising interval (defined as the advertising
+base (seconds) plus a fudge factor, the advertising skew) passes without
+hearing a peer's CARP advertisement, the node will transition itself to
+being a master.
+
+Transitioning from backup to master means:
+1. running the specified up script to assign the vip to the local system
+2. sending a gratuitous arp to the network to claim the vip
+3. continuously sending CARP advertisements to the network every interval.
+
+Transitioning from master to backup means:
+1. running the specified down script to remove the vip from the local system
+
+To understand how ucarp works, it's important to note that the
+advertisement interval is not only used as the time in between which
+each CARP advertisement is sent by the master, but also as a priority
+mechanism where shorter (i.e. more frequent) is better.  The interval
+base and skew values are stored in the CARP advertisement and are used
+by other nodes to make certain decisions.
+
+By default, once a node becomes the master, it will continue on
+indefinitely as the master.  If you like/want/need this behavior, or don't
+have a preferred master, then choose the same interval on all hosts.
+If for whatever reason you were to choose different intervals on the
+hosts, then over time the one with the shortest interval would tend to
+become the master as machines are rebooted, after failures, etc.
+
+Also of note is a conflict resolution algorithm that in case a master
+hears another, equal (in terms of its advertised interval) master, the
+one with the lower IP address will remain master and the other will
+immediately demote itself.  This is simply to eliminate flapping and
+quickly determine who should remain master.  This situation should not
+happen very often but it can.
+
+If you want a "preferred" master to always be the master (even if another
+host is already the master), add the preempt switch (--preempt or -P) and
+assign a shorter interval via the advertisement base (--advbase or -b) and
+skew (--advskew or -k).  This will cause the preferred node to ignore a
+master who is advertising a longer interval and promote itself to master.
+The old master will quickly hear the preferred node advertising a shorter
+interval and immediately demote itself.
+
+In summary, a backup will become master if:
+- no one else advertises for 3 times its own advertisement interval
+- you specified --preempt and it hears a master with a longer interval
+
+and a master will become backup if:
+- another master advertises a shorter interval
+- another master advertises the same interval, and has a lower IP address
+
+
+      ------------------------ OTHER NOTES ------------------------
+
+
+Specify the --neutral (-n) switch for ucarp to not run the downscript
+at startup.
+
+--shutdown (-z) will run the downscript at exit, unless ucarp is already in
+the backup state. 
+
+The "dead ratio" (--deadratio=...) knob basically changes how long a backup
+server will wait for an unresponsive master before considering it as dead, and
+becoming the new master. In the original protocol, the ratio is 3. This is
+also the default when this command-line switch is missing.
+
+Notices are sent both to stderr/stdout and to the syslog daemon (with the
+"daemon" facility) by default. stderr/stdout are bypassed if the daemon is
+started in background (--daemonize). Facilities can be changed with the
+--syslog switch. Use --syslog=none to disable syslog logging, for instance if
+prefer using something like multilog.
+
+You can send the ucarp process a SIGUSR1 to have it log a status line to syslog, 
+like:
+Jan  7 17:38:22 localhost ucarp[6103]: [INFO] BACKUP on eth0 id 198
+
+You can send the ucarp process a SIGUSR2 to have it demote itself from
+master to backup, pause 3 seconds, then proceed as usual to listen for
+other masters and promote itself if necessary.  This could be useful if
+you wish another node to take over master.
+
+--ignoreifstate (-S) option tells ucarp to ignore unplugged network cable. It 
+is useful when you connect ucarp nodes with a crossover patch cord (not via a 
+hub or a switch). Without this option the node in MASTER state will switch to
+BACKUP state when the other node is powered down, because network interface 
+shows that cable is unplugged (NO-CARRIER). Some network interface drivers 
+don't support NO-CARRIER feature, and this option is not needed for these 
+network cards. The card that definitely supports this feature is Realtek 8139.
+
+
+        ------------------------ TRANSLATIONS ------------------------
+
+
+UCARP can speak your native language through gettext / libintl.
+If you want to translate the software, have a look at the po/ directory.
+Copy the ucarp.pot file to <your locale name>.po and use software like Kbabel
+or Emacs to update the file.
+Better use use your local charset than UTF-8.
+
+
+      ------------------------ DOWNLOADING UCARP ------------------------
+
+
+UCARP home page is: http://www.ucarp.org/ .
+
+UCARP mailing-list: http://www.ucarp.org/ml/ .  Be sure to scroll all the way 
+down to see the UCARP mailing list info!
+
+
+Thank you, 
+
+                        -Frank DENIS "Jedi/Sector One" <j at ucarp dot org> .

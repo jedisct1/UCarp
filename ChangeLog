@@ -1,0 +1,84 @@
+
+* Version 1.5.2:
+ - Uses arc4random() if available.
+ - Avoids adverts that might be twice as what they should be.
+By Steve Kehlet.
+
+* Version 1.5.1:
+ - New option (--nomcast / -M) to use broadcast advertisements instead of
+multicast ones. By Steve Kehlet.
+ - autotools update.
+
+* Version 1.5:
+ - Have ucarp register for the VRRP multicast group, by Petr Kohts.
+ - Selection of master improved, by Greg Walton.
+ - New option, -S (--ignoreifstate) to ignore unplugged network cable
+detection, for NICs that don't support that feature, by Serge Sireskin.
+ - -o is now working as an alternative to --passfile, thanks to Eric Evans. 
+ - Have a degraded master send a last advertisement because if its network
+link gets cut and uncut, it doesn't know that the slave has taken the master
+role. Contributed by Tim Niemeyer.
+
+* Version 1.4:
+ - --xparam shortcut is -m, not -x. Thanks fo Fabrice Dulaunoy.
+ - Use multicast destination address for advertisements instead of
+broadcasts. Required for some switches. Fabrice Dulaunoy.
+ - gettext upgrade.
+ - Host with the lower IP address wit hnow be elected master when multiples
+nodes are started with the same parameters, in order to avoid flip-flop.
+By Steve Kehlet.
+ - Improved gratuitous ARP payload for better interoperability, by Steve
+Kehlet.
+ - Removed bogus gratuitous ARP code. Initial report by Marcus Goller.
+ - Documentation updates, by Steve Kehlet.
+
+* Version 1.3:
+  -n option wasn't properly parsed while --neutral was. Reported by Stefan
+Behte.
+  gratuitous ARP packets should now be properly sent. Thanks to Marcus
+Rueckert for indirectly pointing out that the code was wrong.
+  New -m option, and the virtual IP address is now passed to up/down scripts
+as well. By Fabrice Dulaunoy and Dirk Jagdmann who provided different
+implementations of the same idea.
+  A bogus return statement has been removed, thanks to Alessio Cervellin.
+  All interfaces should now be discovered on Solaris.
+  EINTR is handled, thanks to Dean Gaudet.
+  Log exec errors, Dean Gaudet.
+  --passfile option, Dean Gaudet.
+  Ignore POLLNVAL that looks bogus on some systems, at least OSX, reported
+by John Sterling.
+  Send a delayed ARP request when switching to MASTER to deal with some L3
+switches (adapted from an OpenBSD diff by mpf at openbsd.org).
+  Completly remove transition path INIT -> MASTER (adapted from an OpenBSD
+diff by mpf at openbsd.org).
+  
+
+* Version 1.2:
+  fakesnprintf/bsd-getopt_long updates from pure-ftpd 1.0.21.
+  Avoid processing our own multicasts. Thanks to Gregory McGarry.
+  --neutral mode, by Russell Mosemann.
+  Avoid low prioritized hosts quickly switching to MASTER at bootup if
+preemption is enabled.
+
+* Version 1.1:
+  'exec' was removed from sample scripts since it confused some people
+who tried to add commands afterwards :)
+  Workarounds have been added for unaligned pointers. It should fix
+crashes on Sparc hardware.
+  logfile() properly sends errors to stderr and notices to stdout.
+  The OpenBSD getopt_long() replacement has been fixed.
+  inet_aton() has been replaced by inet_pton();
+  self-sent packets are now filtered out.
+  The read timeout for pcap_open_live() has been shortened.
+  Captured ethernet frames sometimes have extra bytes after the IP
+packet. This case is now properly handled.
+  The interface is no more switched in promiscous mode.
+  MAC addresses are fetched on Solaris and other Solaris portability
+improvements have been made, thanks to Richard Bellamy.
+  Even in non-preemptive mode, we start to poll for a dead master as
+soon as we leave the INIT state.
+  Syslog facilities can now be changed through the -f / --syslog switch.
+
+* Version 1.0:
+  Finally the first 1.x release :)
+  Thanks to everyone for testing every previous snapshot.

@@ -1,0 +1,346 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR UCARP team
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ucarp 1.5.2\n"
+"Report-Msgid-Bugs-To: bugs@ucarp.org\n"
+"POT-Creation-Date: 2010-01-31 23:04+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/carp.c:58
+msgid "Switching to state: INIT"
+msgstr ""
+
+#: src/carp.c:61
+msgid "Switching to state: BACKUP"
+msgstr ""
+
+#: src/carp.c:67
+msgid "Switching to state: MASTER"
+msgstr ""
+
+#: src/carp.c:72
+#, c-format
+msgid "Unknown state: [%d]"
+msgstr ""
+
+#: src/carp.c:222
+msgid "Out of memory to create packet"
+msgstr ""
+
+#: src/carp.c:287
+#, c-format
+msgid "write() has failed: %s"
+msgstr ""
+
+#: src/carp.c:293
+#, c-format
+msgid "write() error #%d/%d"
+msgstr ""
+
+#: src/carp.c:314
+msgid "* advertisement injected *"
+msgstr ""
+
+#: src/carp.c:346 src/carp.c:772
+#, c-format
+msgid "initializing now to gettimeofday() failed: %s"
+msgstr ""
+
+#: src/carp.c:397
+msgid "master_down event in INIT state"
+msgstr ""
+
+#: src/carp.c:502
+#, c-format
+msgid "Bad TTL: [%u]"
+msgstr ""
+
+#: src/carp.c:507
+#, c-format
+msgid "Bad version: [%u]"
+msgstr ""
+
+#: src/carp.c:513
+#, c-format
+msgid "Ignoring vhid: [%u]"
+msgstr ""
+
+#: src/carp.c:519
+msgid "Bad IP checksum"
+msgstr ""
+
+#: src/carp.c:542
+#, c-format
+msgid ""
+"Bad digest - md2=[%02x%02x%02x%02x...] md=[%02x%02x%02x%02x...] - Check "
+"vhid, password and virtual IP address"
+msgstr ""
+
+#: src/carp.c:598
+msgid "Preferred master advertised: going back to BACKUP state"
+msgstr ""
+
+#: src/carp.c:613
+msgid ""
+"Non-preferred master advertising: reasserting control of VIP with another "
+"gratuitous arp"
+msgstr ""
+
+#: src/carp.c:624
+msgid "Putting MASTER down - preemption"
+msgstr ""
+
+#: src/carp.c:637
+msgid "Putting MASTER DOWN (going to time out)"
+msgstr ""
+
+#: src/carp.c:724
+msgid "Password too long"
+msgstr ""
+
+#: src/carp.c:737
+#, c-format
+msgid "Unable to find MAC address of [%s]"
+msgstr ""
+
+#: src/carp.c:741
+#, c-format
+msgid "Local advertised ethernet address is [%02x:%02x:%02x:%02x:%02x:%02x]"
+msgstr ""
+
+#: src/carp.c:748
+#, c-format
+msgid "Unable to open interface [%s]: %s"
+msgstr ""
+
+#: src/carp.c:754
+#, c-format
+msgid "Unable to compile pcap rule: %s [%s]"
+msgstr ""
+
+#: src/carp.c:778
+#, c-format
+msgid "Error opening socket for interface [%s]: %s"
+msgstr ""
+
+#: src/carp.c:796 src/fillmac.c:51
+msgid "Interface name too long"
+msgstr ""
+
+#: src/carp.c:854 src/carp.c:875
+#, c-format
+msgid "gettimeofday() failed: %s"
+msgstr ""
+
+#: src/carp.c:867
+#, c-format
+msgid "exiting: poll() error: %s"
+msgstr ""
+
+#: src/carp.c:870
+#, c-format
+msgid "exiting: pfds[0].revents = %d"
+msgstr ""
+
+#: src/daemonize.c:53
+#, c-format
+msgid "Unable to get in background: [fork: %s]"
+msgstr ""
+
+#: src/daemonize.c:61
+#, c-format
+msgid "Unable to detach from the current session: %s"
+msgstr ""
+
+#: src/daemonize.c:74
+msgid "Unable to detach: /dev/null can't be duplicated"
+msgstr ""
+
+#: src/fillmac.c:42
+#, c-format
+msgid "Unable to open raw device: [%s]"
+msgstr ""
+
+#: src/fillmac.c:57
+#, c-format
+msgid "Unable to get hardware info about an interface: %s"
+msgstr ""
+
+#: src/fillmac.c:67
+#, c-format
+msgid "Unknown hardware type [%u]"
+msgstr ""
+
+#: src/fillmac.c:80
+#, c-format
+msgid "Unable to get interface address: %s"
+msgstr ""
+
+#: src/fillmac.c:92
+#, c-format
+msgid "Invalid media / hardware address for [%s]"
+msgstr ""
+
+#: src/fillmac.c:116
+msgid "ioctl SIOCGLIFNUM error"
+msgstr ""
+
+#: src/fillmac.c:120
+msgid "No interface found"
+msgstr ""
+
+#: src/fillmac.c:128
+msgid "ioctl SIOCGLIFCONF error"
+msgstr ""
+
+#: src/fillmac.c:135
+#, c-format
+msgid "Interface [%s] not found"
+msgstr ""
+
+#: src/fillmac.c:148
+#, c-format
+msgid "Unable to get hardware info about [%s]"
+msgstr ""
+
+#: src/garp.c:50
+msgid "out of memory to send gratuitous ARP"
+msgstr ""
+
+#: src/garp.c:60
+#, c-format
+msgid "write() in garp: %s"
+msgstr ""
+
+#: src/spawn.c:24
+#, c-format
+msgid "Unable to exec %s %s %s%s%s: %s"
+msgstr ""
+
+#: src/spawn.c:30
+#, c-format
+msgid "Spawning [%s %s %s%s%s]"
+msgstr ""
+
+#: src/spawn.c:50
+#, c-format
+msgid "Unable to spawn the script: %s"
+msgstr ""
+
+#: src/ucarp.c:26
+msgid ""
+"--interface=<if> (-i <if>): bind interface <if>\n"
+"--srcip=<ip> (-s <ip>): source (real) IP address of that host\n"
+"--vhid=<id> (-v <id>): virtual IP identifier (1-255)\n"
+"--pass=<pass> (-p <pass>): password\n"
+"--passfile=<file> (-o <file>): read password from file\n"
+"--preempt (-P): becomes a master as soon as possible\n"
+"--neutral (-n): don't run downscript at start if backup\n"
+"--addr=<ip> (-a <ip>): virtual shared IP address\n"
+"--help (-h): summary of command-line options\n"
+"--advbase=<seconds> (-b <seconds>): advertisement frequency\n"
+"--advskew=<skew> (-k <skew>): advertisement skew (0-255)\n"
+"--upscript=<file> (-u <file>): run <file> to become a master\n"
+"--downscript=<file> (-d <file>): run <file> to become a backup\n"
+"--deadratio=<ratio> (-r <ratio>): ratio to consider a host as dead\n"
+"--shutdown (-z): call shutdown script at exit\n"
+"--daemonize (-B): run in background\n"
+"--ignoreifstate (-S): ignore interface state (down, no carrier)\n"
+"--nomcast (-M): use broadcast (instead of multicast) advertisements\n"
+"--facility=<facility> (-f): set syslog facility (default=daemon)\n"
+"--xparam=<value> (-x): extra parameter to send to up/down scripts\n"
+"\n"
+"Sample usage:\n"
+"\n"
+"Manage the 10.1.1.252 shared virtual address on interface eth0, with\n"
+"1 as a virtual address idenfitier, mypassword as a password, and\n"
+"10.1.1.1 as a real permanent address for this host.\n"
+"Call /etc/vip-up.sh when the host becomes a master, and\n"
+"/etc/vip-down.sh when the virtual IP address has to be disabled.\n"
+"\n"
+"ucarp --interface=eth0 --srcip=10.1.1.1 --vhid=1 --pass=mypassword \\\n"
+"      --addr=10.1.1.252 \\\n"
+"      --upscript=/etc/vip-up.sh --downscript=/etc/vip-down.sh\n"
+"\n"
+"\n"
+"Please report bugs to "
+msgstr ""
+
+#: src/ucarp.c:81
+msgid "Out of memory"
+msgstr ""
+
+#: src/ucarp.c:115 src/ucarp.c:168
+#, c-format
+msgid "Invalid address: [%s]"
+msgstr ""
+
+#: src/ucarp.c:137
+#, c-format
+msgid "unable to open passfile %s for reading: %s"
+msgstr ""
+
+#: src/ucarp.c:142
+#, c-format
+msgid "error reading passfile %s: %s"
+msgstr ""
+
+#: src/ucarp.c:144
+msgid "unexpected end of file"
+msgstr ""
+
+#: src/ucarp.c:226
+#, c-format
+msgid "Unknown syslog facility: [%s]"
+msgstr ""
+
+#: src/ucarp.c:254
+msgid "You must supply a network interface"
+msgstr ""
+
+#: src/ucarp.c:257
+#, c-format
+msgid "Using [%s] as a network interface"
+msgstr ""
+
+#: src/ucarp.c:260
+msgid "You must supply a valid virtual host id"
+msgstr ""
+
+#: src/ucarp.c:264
+msgid "You must supply a password"
+msgstr ""
+
+#: src/ucarp.c:268
+msgid "You must supply an advertisement time base"
+msgstr ""
+
+#: src/ucarp.c:272
+msgid "You must supply a persistent source address"
+msgstr ""
+
+#: src/ucarp.c:276
+msgid "You must supply a virtual host address"
+msgstr ""
+
+#: src/ucarp.c:280
+msgid "Warning: no script called when going up"
+msgstr ""
+
+#: src/ucarp.c:283
+msgid "Warning: no script called when going down"
+msgstr ""
+
+#: src/ucarp.c:286
+msgid "Dead ratio can't be zero"
+msgstr ""

@@ -1,0 +1,49 @@
+* Version 1.5.2:
+ - Avoid adverts that might be twice what they should be on some Linux
+systems (Steve Kehlet).
+
+* Version 1.5.1:
+ - A new option has been added to try using broadcast advertisements instead
+of multicast ones.
+
+* Version 1.5:
+ - Breakage introducted with version 1.4 should finally be fixed, thanks to
+Petr Kohts, Greg Walton and Steve Kehlet.
+ - A new option has been added to ignore unplugged network cable detection,
+useful when nodes are connected with a crossover cable, not with a switch.
+
+* Version 1.4:
+ - This version should finally fix every issue people had with gratuitous
+ARP announcements.
+ - Nodes configured with the same intervals shouln't flip-flop any more.
+
+* Version 1.3:
+ - Gratuitous ARP packets should now properly be sent, regardless of the
+architecture.
+ - New option: -m (-xparam=...) in order to add arbitrary arguments to
+up/down scripts.
+ - New option: -o (--passfile=...) in order to read the secret key from a
+file.
+ - A delayed ARP request is sent after the first one when switching to
+MASTER, in order to deal with some layer-3 switches.
+ - Bug fixes.
+
+* Version 1.2:
+ - Neutral mode (--neutral).
+ - NetBSD compatibility.
+ - Minor bug fixes.
+
+* Version 1.1:
+ - The non-preemptive mode should work flawlessly.
+ - Syslog facilities can now be changed.
+ - Self-sent packets are now filtered out.
+ - Portability has been improved.
+
+* Version 1.0:
+ - I18n support has been added.
+ - Syslog support has been implemented.
+ - Code cleanups and documentation updates.
+ - A mailing-list is now available.
+ - Daemonization (--daemonize / -B) has been added.
+
+
