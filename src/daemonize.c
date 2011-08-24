@@ -61,6 +61,16 @@ void dodaemonize(void)
                     _("Unable to detach from the current session: %s"),
                     strerror(errno));  /* continue anyway */
         }
+
+        /* Fork again so we're not a session leader */
+        if ((child = fork()) == (pid_t) -1) {
+            logfile(LOG_ERR, _("Unable to background: [fork: %s] #2"),
+                    strerror(errno));
+            return;
+        } else if ( child != (pid_t) 0) {
+            _exit(EXIT_SUCCESS);       /* parent exits */
+        }
+
         chdir("/");
         i = open_max();        
         do {
