@@ -762,6 +762,7 @@ int docarp(void)
     
     if (shutdown_at_exit != 0) {
         (void) signal(SIGINT, sighandler_exit);
+        (void) signal(SIGHUP, sighandler_exit);
         (void) signal(SIGQUIT, sighandler_exit);
         (void) signal(SIGTERM, sighandler_exit);
     }
