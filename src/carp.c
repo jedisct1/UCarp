@@ -106,7 +106,7 @@ static void carp_hmac_prepare(struct carp_softc *sc)
 
 static unsigned short cksum(const void * const buf_, const size_t len)
 {
-    const unsigned char *buf = (unsigned char *) buf_;
+    const unsigned char *buf = (const unsigned char *) buf_;
     unsigned long sum = 0UL;
     size_t evenlen = len & ~ (size_t) 1U;
     size_t i = (size_t) 0U;
