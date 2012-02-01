@@ -1,4 +1,5 @@
 #include <config.h>
+#include "daemonize.h"
 #include "ucarp.h"
 #include "log.h"
 
