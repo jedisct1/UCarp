@@ -1,4 +1,5 @@
 #include <config.h>
+#include "log.h"
 #include "ucarp.h"
 
 #ifdef WITH_DMALLOC
