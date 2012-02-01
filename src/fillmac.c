@@ -85,7 +85,7 @@ int fill_mac_address(void)
         while (ifa != NULL) {
             if (strcmp(ifa->ifa_name, interface) == 0 &&
                 ifa->ifa_addr->sa_family == AF_LINK) {
-                sadl = (struct sockaddr_dl *) ifa->ifa_addr;
+                sadl = (struct sockaddr_dl *) (void *) ifa->ifa_addr;
                 if (sadl == NULL || sadl->sdl_type != IFT_ETHER ||
                     sadl->sdl_alen <= 0) {
                     logfile(LOG_ERR,
