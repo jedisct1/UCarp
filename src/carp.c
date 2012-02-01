@@ -75,7 +75,7 @@ static void carp_set_state(struct carp_softc *sc, int state)
     sc->sc_state = state;
 }
 
-void carp_hmac_prepare(struct carp_softc *sc)
+static void carp_hmac_prepare(struct carp_softc *sc)
 {
     unsigned char version = CARP_VERSION, type = CARP_ADVERTISEMENT;
     unsigned char vhid = sc->sc_vhid & 0xff;
@@ -151,7 +151,7 @@ static void carp_hmac_generate(struct carp_softc *sc, u_int32_t counter[2],
     SHA1Final(md, &ctx);    
 }
 
-int carp_prepare_ad(struct carp_header *ch, struct carp_softc *sc)
+static int carp_prepare_ad(struct carp_header *ch, struct carp_softc *sc)
 {
     if (sc->sc_init_counter != 0) {
         /* this could also be seconds since unix epoch */
@@ -652,7 +652,7 @@ static void packethandler(unsigned char *dummy,
     }
 }     
 
-RETSIGTYPE sighandler_exit(const int sig)
+static RETSIGTYPE sighandler_exit(const int sig)
 {
     (void) sig;
 #ifdef DEBUG
@@ -665,7 +665,7 @@ RETSIGTYPE sighandler_exit(const int sig)
     _exit(EXIT_SUCCESS);
 }
 
-RETSIGTYPE sighandler_usr(const int sig)
+static RETSIGTYPE sighandler_usr(const int sig)
 {
     switch (sig) {
     case SIGUSR1:
@@ -677,7 +677,7 @@ RETSIGTYPE sighandler_usr(const int sig)
     }
 }
 
-char *build_bpf_rule(void)
+static char *build_bpf_rule(void)
 {
     static char rule[256];
     const char *srcip_s;    
