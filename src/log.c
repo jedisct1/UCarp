@@ -12,6 +12,9 @@ void logfile(const int crit, const char *format, ...)
     const char *urgency;    
     va_list va;
     char line[MAX_SYSLOG_LINE];
+
+    if (crit == LOG_DEBUG && ! debug)
+        return;
     
     va_start(va, format);
     vsnprintf(line, sizeof line, format, va);

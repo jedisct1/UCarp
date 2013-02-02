@@ -20,6 +20,7 @@ GLOBAL(unsigned int dead_ratio, DEFAULT_DEAD_RATIO);
 GLOBAL0(unsigned char advskew);
 GLOBAL0(char *upscript);
 GLOBAL0(char *downscript);
+GLOBAL0(unsigned int debug);
 GLOBAL0(signed char preempt);
 GLOBAL0(signed char neutral);
 GLOBAL0(signed char shutdown_at_exit);
