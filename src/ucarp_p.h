@@ -6,6 +6,7 @@ static const char *GETOPT_OPTIONS = "i:s:v:p:Pa:hb:k:x:nu:d:r:zf:Bo:SM";
 static struct option long_options[] = {
     { "interface", 1, NULL, 'i' },
     { "srcip", 1, NULL, 's' },
+    { "mcastip", 1, NULL, 'm' },
     { "vhid", 1, NULL, 'v' },
     { "pass", 1, NULL, 'p' },
     { "preempt", 0, NULL, 'P' },

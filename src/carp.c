@@ -239,7 +239,7 @@ static void carp_send_ad(struct carp_softc *sc)
     ip.ip_sum = 0;
     
     memcpy(&ip.ip_src, &srcip, sizeof ip.ip_src);    
-    memcpy(&ip.ip_dst.s_addr, inaddr_carp_group, sizeof ip.ip_dst.s_addr);
+    memcpy(&ip.ip_dst.s_addr, &mcastip, sizeof ip.ip_dst.s_addr);
     
     carp_prepare_ad(&ch, sc);       
     
@@ -262,12 +262,13 @@ static void carp_send_ad(struct carp_softc *sc)
         eh.ether_dhost[4] = 0xff;
         eh.ether_dhost[5] = 0xff;        
     } else {
+        unsigned int m = ntohl(mcastip.s_addr);
         eh.ether_dhost[0] = 0x01;
         eh.ether_dhost[1] = 0x00;
         eh.ether_dhost[2] = 0x5e;
-        eh.ether_dhost[3] = 0x00;
-        eh.ether_dhost[4] = 0x00;
-        eh.ether_dhost[5] = 0x12;        
+        eh.ether_dhost[3] = m >> 16 & 0x7f;
+        eh.ether_dhost[4] = m >>  8 & 0xff;
+        eh.ether_dhost[5] = m       & 0xff;
     }    
     eh.ether_type = htons(ETHERTYPE_IP);    
     
@@ -514,6 +515,13 @@ static void packethandler(unsigned char *dummy,
                     (unsigned int) ch.carp_vhid);
 #endif
             return;            
+        }
+        if (iphead.ip_dst.s_addr != mcastip.s_addr) {
+#ifdef DEBUG
+            logfile(LOG_DEBUG, _("Ignoring different multicast ip: [%s]"),
+                    inet_ntoa(iphead.ip_dst));
+#endif
+            return;
         }
         if (cksum(sp, ip_len + sizeof ch) != 0) {
             logfile(LOG_WARNING, _("Bad IP checksum"));
@@ -782,7 +790,7 @@ int docarp(void)
     }
     if (!no_mcast) {
         memset(&req_add, 0, sizeof req_add);
-        req_add.imr_multiaddr.s_addr = inet_addr("224.0.0.18");
+        req_add.imr_multiaddr.s_addr = mcastip.s_addr;
         req_add.imr_interface.s_addr = srcip.s_addr;
         if (setsockopt(fd, IPPROTO_IP, IP_ADD_MEMBERSHIP,
                        &req_add, sizeof req_add) < 0) {

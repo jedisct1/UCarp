@@ -133,6 +133,28 @@ Now unplug the master. After a few seconds, the other host becomes the new
 master.
 
 
+------------------------ MULTICAST IP SELECTION -------------------------
+
+The '--vhid' virtual IP identifier field only is only eight bits, providing up
+to 255 different virtual IPs on the same multicast group IP. For larger
+deployments, and more flexibility in allocation, ucarp can optionally use a
+different multicast IP. By default, ucarp will send/listen on 224.0.0.18, which
+is the assigned IP for VRRP. If you want to use a different address, use the
+'--mcast' option. Consult the available multicast addresses before deciding
+which to use.
+
+http://www.iana.org/assignments/multicast-addresses/multicast-addresses.xml
+http://tools.ietf.org/html/rfc5771
+http://tools.ietf.org/html/rfc2365
+
+Addresses within 239.192.0.0/14 should be most appropriate.
+
+If ucarp isn't working on a different IP, check that your networking gear is
+set up to handle it. tcpdump on each host can be handy for diagnosis:
+
+tcpdump -n 'net 224.0.0.0/4'
+
+
 ------------------------ MASTER ELECTION PROCESS ------------------------
 
 

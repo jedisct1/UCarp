@@ -25,6 +25,7 @@ static void usage(void)
     fputs(_(
         "--interface=<if> (-i <if>): bind interface <if>\n"
         "--srcip=<ip> (-s <ip>): source (real) IP address of that host\n"
+        "--mcast=<ip> (-m <ip>): multicast group IP address (default 224.0.0.18)\n"
         "--vhid=<id> (-v <id>): virtual IP identifier (1-255)\n"
         "--pass=<pass> (-p <pass>): password\n"
         "--passfile=<file> (-o <file>): read password from file\n"
@@ -97,6 +98,7 @@ int main(int argc, char *argv[])
     if (argc <= 1) {
         usage();
     }        
+    inet_pton(AF_INET, DEFAULT_MCASTIP, &mcastip);
     while ((fodder = getopt_long(argc, argv, GETOPT_OPTIONS, long_options,
                                  &option_index)) != -1) {
         switch (fodder) {
@@ -112,6 +114,13 @@ int main(int argc, char *argv[])
         }
         case 's': {
             if (inet_pton(AF_INET, optarg, &srcip) == 0) {
+                logfile(LOG_ERR, _("Invalid address: [%s]"), optarg);
+                return 1;
+            }
+            break;
+        }
+        case 'm': {
+            if (inet_pton(AF_INET, optarg, &mcastip) == 0) {
                 logfile(LOG_ERR, _("Invalid address: [%s]"), optarg);
                 return 1;
             }
