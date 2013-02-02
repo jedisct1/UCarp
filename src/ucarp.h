@@ -114,8 +114,6 @@ extern int errno;
 # define __packed__
 #endif
 
-#define _COMA_ ,
-
 #define ETHERNET_MTU 1500
 #ifndef ETHER_ADDR_LEN
 # define ETHER_ADDR_LEN 6
