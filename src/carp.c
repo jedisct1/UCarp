@@ -493,7 +493,7 @@ static void packethandler(unsigned char *dummy,
             return;
         }
         if (ch.carp_vhid != vhid) {
-            logfile(LOG_NOTICE, _("Ignoring vhid: [%u]"),
+            logfile(LOG_DEBUG, _("Ignoring vhid: [%u]"),
                     (unsigned int) ch.carp_vhid);
             return;            
         }
