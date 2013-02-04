@@ -849,7 +849,8 @@ int docarp(void)
         }
 
         if (sc.sc_ad_tmo.tv_sec == 0) {
-            poll_sleep_time = sc.sc_advbase * 1000;
+            unsigned int tmpskew = advskew * 1000 / 256;
+            poll_sleep_time = sc.sc_advbase * 1000 + tmpskew;
         } else {
             if (gettimeofday(&now, NULL) != 0) {
                 logfile(LOG_WARNING, _("gettimeofday() failed: %s"),
