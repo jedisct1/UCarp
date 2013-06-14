@@ -639,13 +639,7 @@ static void packethandler(unsigned char *dummy,
 
 static RETSIGTYPE sighandler_exit(const int sig)
 {
-    (void) sig;
-    logfile(LOG_DEBUG, "sighandler_exit(): Calling [%s] and exiting",
-            downscript);
-    if (sc.sc_state != BACKUP) {
-        (void) spawn_handler(dev_desc_fd, downscript);
-    }
-    _exit(EXIT_SUCCESS);
+    received_signal=15;
 }
 
 static RETSIGTYPE sighandler_usr(const int sig)
@@ -824,6 +818,15 @@ int docarp(void)
             continue;
         }
         break;
+        case 15:
+        logfile(LOG_DEBUG, "sighandler_exit(): Calling [%s] and exiting",
+                downscript);
+        if (sc.sc_state != BACKUP) {
+            (void) spawn_handler(dev_desc_fd, downscript);
+        }
+        _exit(EXIT_SUCCESS);
+        break;
+
             }
         }
 
