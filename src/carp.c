@@ -219,8 +219,7 @@ static void carp_send_ad(struct carp_softc *sc)
     eth_len = ip_len + sizeof eh;
     if ((pkt = ALLOCA(eth_len)) == NULL) {
         logfile(LOG_ERR, _("Out of memory to create packet"));
-        sc->sc_ad_tmo.tv_sec = now.tv_sec + tv.tv_sec;
-        sc->sc_ad_tmo.tv_usec = now.tv_usec + tv.tv_usec;            
+        timeradd(&now, &tv, &sc->sc_ad_tmo);
         return;
     }
     ip.ip_v = IPVERSION;
@@ -321,8 +320,7 @@ static void carp_send_ad(struct carp_softc *sc)
         sc->sc_delayed_arp = -1;
     }    
     if (advbase != 255 || advskew != 255) {
-        sc->sc_ad_tmo.tv_sec = now.tv_sec + tv.tv_sec;
-        sc->sc_ad_tmo.tv_usec = now.tv_usec + tv.tv_usec;            
+        timeradd(&now, &tv, &sc->sc_ad_tmo);
         /* IPv6 ? */        
     }
 }
@@ -351,21 +349,17 @@ static void carp_setrun(struct carp_softc *sc, sa_family_t af)
         tv.tv_usec = (unsigned int) (sc->sc_advskew * 1000000ULL / 256ULL);
         switch (af) {        
         case AF_INET:
-            sc->sc_md_tmo.tv_sec = now.tv_sec + tv.tv_sec;
-            sc->sc_md_tmo.tv_usec = now.tv_usec + tv.tv_usec;            
+            timeradd(&now, &tv, &sc->sc_md_tmo);
             break;
 #ifdef INET6
         case AF_INET6:
-            sc->sc_md6_tmo.tv_sec = now.tv_sec + tv.tv_sec;
-            sc->sc_md6_tmo.tv_usec = now.tv_usec + tv.tv_usec;            
+            timeradd(&now, &tv, &sc->sc_md6_tmo);
             break;
 #endif /* INET6 */
         default:
-            sc->sc_md_tmo.tv_sec = now.tv_sec + tv.tv_sec;
-            sc->sc_md_tmo.tv_usec = now.tv_usec + tv.tv_usec;
+            timeradd(&now, &tv, &sc->sc_md_tmo);
 #ifdef INET6
-            sc->sc_md6_tmo.tv_sec = now.tv_sec + tv.tv_sec;
-            sc->sc_md6_tmo.tv_usec = now.tv_usec + tv.tv_usec;
+            timeradd(&now, &tv, &sc->sc_md6_tmo);
 #endif
             break;
         }        
@@ -373,8 +367,7 @@ static void carp_setrun(struct carp_softc *sc, sa_family_t af)
     case MASTER:
         tv.tv_sec = (unsigned int) sc->sc_advbase;
         tv.tv_usec = (unsigned int) (sc->sc_advskew * 1000000ULL / 256ULL);
-        sc->sc_md_tmo.tv_sec = now.tv_sec + tv.tv_sec;
-        sc->sc_md_tmo.tv_usec = now.tv_usec + tv.tv_usec;
+        timeradd(&now, &tv, &sc->sc_md_tmo);
         /* No IPv6 scheduling ? */
         break;
     }
