@@ -801,32 +801,31 @@ int docarp(void)
 #endif
         if (received_signal != 0) {
             int flag = received_signal;
-        
+            
             received_signal = 0;
             switch (flag) {
-        case 1:
-        logfile(LOG_INFO, "%s on %s id %d", 
-            (sc.sc_state == BACKUP ? "BACKUP" : "MASTER"),
-            interface, sc.sc_vhid);
-        break;
-        case 2:
-        logfile(LOG_DEBUG, "Caught signal (USR2) considering going down");
-        if (sc.sc_state != BACKUP) {
-            carp_set_state(&sc, BACKUP);
-            sleep(3); /* hold up a sec... */
-            carp_setrun(&sc, 0); /* now listen for 3 heartbeats, as usual */
-            continue;
-        }
-        break;
-        case 15:
-        logfile(LOG_DEBUG, "sighandler_exit(): Calling [%s] and exiting",
-                downscript);
-        if (sc.sc_state != BACKUP) {
-            (void) spawn_handler(dev_desc_fd, downscript);
-        }
-        _exit(EXIT_SUCCESS);
-        break;
-
+            case 1:
+                logfile(LOG_INFO, "%s on %s id %d", 
+                        (sc.sc_state == BACKUP ? "BACKUP" : "MASTER"),
+                        interface, sc.sc_vhid);
+                break;
+            case 2:
+                logfile(LOG_DEBUG, "Caught signal (USR2) considering going down");
+                if (sc.sc_state != BACKUP) {
+                    carp_set_state(&sc, BACKUP);
+                    sleep(3); /* hold up a sec... */
+                    carp_setrun(&sc, 0); /* now listen for 3 heartbeats, as usual */
+                    continue;
+                }
+                break;
+            case 15:
+                logfile(LOG_DEBUG, "sighandler_exit(): Calling [%s] and exiting",
+                        downscript);
+                if (sc.sc_state != BACKUP) {
+                    (void) spawn_handler(dev_desc_fd, downscript);
+                }
+                _exit(EXIT_SUCCESS);
+                break;                
             }
         }
 
