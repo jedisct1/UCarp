@@ -38,7 +38,7 @@ static void usage(void)
         "--upscript=<file> (-u <file>): run <file> to become a master\n"
         "--downscript=<file> (-d <file>): run <file> to become a backup\n"
         "--deadratio=<ratio> (-r <ratio>): ratio to consider a host as dead\n"
-        "--debug (-D: enable debug output\n"
+        "--debug (-D): enable debug output\n"
         "--shutdown (-z): call shutdown script at exit\n"
         "--daemonize (-B): run in background\n"
         "--ignoreifstate (-S): ignore interface state (down, no carrier)\n"
