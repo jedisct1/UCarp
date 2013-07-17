@@ -652,11 +652,11 @@ static RETSIGTYPE sighandler_usr(const int sig)
 {
     switch (sig) {
     case SIGUSR1:
-    received_signal=1;
-    break;
+        received_signal=1;
+        break;
     case SIGUSR2:
-    received_signal=2;
-    break;
+        received_signal=2;
+        break;
     }
 }
 
