@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2011 Frank Denis. All rights reserved.
+ * Copyright (c) 2004-2014 Frank Denis. All rights reserved.
  * 
  * This crucial part of UCARP is derived from the OpenBSD project.
  * Original copyright follows. 
