@@ -128,6 +128,10 @@ int main(int argc, char *argv[])
             break;            
         }
         case 'v': {
+            if (strtoul(optarg, NULL, 0) > 255 || strtol(optarg, NULL, 0) < 1) {
+                logfile(LOG_ERR, _("vhid must be between 1 and 255."));
+                return 1;
+            }
             vhid = (unsigned char) strtoul(optarg, NULL, 0);
             break;            
         }       
