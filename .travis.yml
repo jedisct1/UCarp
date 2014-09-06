@@ -1,0 +1,12 @@
+language: c
+
+compiler:
+ - clang
+ - gcc
+ 
+before_script:
+ - sudo apt-get install libpcap-dev
+ - ./autogen.sh
+ - ./configure --disable-dependency-tracking
+ 
+script: make check
