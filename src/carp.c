@@ -675,7 +675,8 @@ int docarp(void)
     int iface_running = 1;
     int poll_sleep_time;
     struct timeval time_until_advert;
-    struct sigaction usr_action, term_action;
+    struct sigaction usr_action;
+    struct sigaction term_action;
 
     sc.sc_vhid = vhid;
     sc.sc_advbase = advbase;
