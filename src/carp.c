@@ -675,6 +675,7 @@ int docarp(void)
     int iface_running = 1;
     int poll_sleep_time;
     struct timeval time_until_advert;
+    struct sigaction usr_action, term_action;
 
     sc.sc_vhid = vhid;
     sc.sc_advbase = advbase;
@@ -729,13 +730,52 @@ int docarp(void)
     pfds[0].events = POLLIN | POLLERR | POLLHUP;
     
     if (shutdown_at_exit != 0) {
-        (void) signal(SIGINT, sighandler_exit);
-        (void) signal(SIGHUP, sighandler_exit);
-        (void) signal(SIGQUIT, sighandler_exit);
-        (void) signal(SIGTERM, sighandler_exit);
+        (void) sigemptyset(&term_action.sa_mask);
+        term_action.sa_handler = sighandler_exit;
+        term_action.sa_flags = SA_NODEFER;
+
+        if (sigaction(SIGINT, &term_action, NULL) < 0) {
+            logfile(LOG_ERR,
+               "Error when trying register SIGINT handler: %s",
+               strerror(errno));
+            return -1;
+        }
+        if (sigaction(SIGQUIT, &term_action, NULL) < 0) {
+            logfile(LOG_ERR,
+               "Error when trying register SIGQUIT handler: %s",
+               strerror(errno));
+            return -1;
+        }
+        if (sigaction(SIGTERM, &term_action, NULL) < 0) {
+            logfile(LOG_ERR,
+               "Error when trying register SIGTERM handler: %s",
+               strerror(errno));
+            return -1;
+        }
+        if (sigaction(SIGHUP, &term_action, NULL) < 0) {
+            logfile(LOG_ERR,
+               "Error when trying register SIGHUP handler: %s",
+               strerror(errno));
+            return -1;
+        }
     }
-    (void) signal(SIGUSR1, sighandler_usr);
-    (void) signal(SIGUSR2, sighandler_usr);
+
+    (void) sigemptyset(&usr_action.sa_mask);
+    usr_action.sa_handler = sighandler_usr;
+    usr_action.sa_flags = SA_NODEFER;
+
+    if (sigaction(SIGUSR1, &usr_action, NULL) < 0) {
+        logfile(LOG_ERR,
+           "Error when trying register SIGUSR1 handler: %s",
+           strerror(errno));
+        return -1;
+    }
+    if (sigaction(SIGUSR2, &usr_action, NULL) < 0) {
+        logfile(LOG_ERR,
+           "Error when trying register SIGUSR2 handler: %s",
+           strerror(errno));
+        return -1;
+    }
 
     if (gettimeofday(&now, NULL) != 0) {
         logfile(LOG_WARNING, _("initializing now to gettimeofday() failed: %s"),
