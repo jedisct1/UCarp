@@ -10,7 +10,7 @@
 static unsigned int open_max(void)
 {
     long z;
-    
+
     if ((z = (long) sysconf(_SC_OPEN_MAX)) < 0L) {
         logfile(LOG_ERR, "_SC_OPEN_MAX");
         _exit(EXIT_FAILURE);
@@ -21,7 +21,7 @@ static unsigned int open_max(void)
 static int closedesc_all(const int closestdin)
 {
     int fodder;
-    
+
     if (closestdin != 0) {
         (void) close(0);
         if ((fodder = open("/dev/null", O_RDONLY)) == -1) {
@@ -39,12 +39,12 @@ static int closedesc_all(const int closestdin)
     (void) dup2(1, 2);
     if (fodder > 2) {
         (void) close(fodder);
-    }    
+    }
     return 0;
 }
 
 void dodaemonize(void)
-{ 
+{
     pid_t child;
     unsigned int i;
 
@@ -56,7 +56,7 @@ void dodaemonize(void)
             return;
         } else if (child != (pid_t) 0) {
             _exit(EXIT_SUCCESS);       /* parent exits */
-        }         
+        }
         if (setsid() == (pid_t) -1) {
             logfile(LOG_WARNING,
                     _("Unable to detach from the current session: %s"),
@@ -73,7 +73,7 @@ void dodaemonize(void)
         }
 
         chdir("/");
-        i = open_max();        
+        i = open_max();
         do {
             if (isatty((int) i)) {
                 (void) close((int) i);

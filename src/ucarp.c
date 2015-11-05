@@ -44,7 +44,7 @@ static void usage(void)
         "--ignoreifstate (-S): ignore interface state (down, no carrier)\n"
         "--nomcast (-M): use broadcast (instead of multicast) advertisements\n"
         "--facility=<facility> (-f): set syslog facility (default=daemon)\n"
-        "--xparam=<value> (-x): extra parameter to send to up/down scripts\n"       
+        "--xparam=<value> (-x): extra parameter to send to up/down scripts\n"
         "\n"
         "Sample usage:\n"
         "\n"
@@ -57,17 +57,17 @@ static void usage(void)
         "ucarp --interface=eth0 --srcip=10.1.1.1 --vhid=1 --pass=mypassword \\\n"
         "      --addr=10.1.1.252 \\\n"
         "      --upscript=/etc/vip-up.sh --downscript=/etc/vip-down.sh\n"
-        "\n\n"    
+        "\n\n"
         "Please report bugs to "), stdout);
     puts(PACKAGE_BUGREPORT ".\n");
-    
+
     exit(EXIT_SUCCESS);
 }
 
 static void init_rand(void)
 {
     struct timeval tv;
-    
+
     gettimeofday(&tv, NULL);
 #ifdef HAVE_SRANDOMDEV
     srandomdev();
@@ -75,13 +75,13 @@ static void init_rand(void)
     srandom((unsigned int) (tv.tv_sec ^ tv.tv_usec ^ (getpid() << 16)));
 #else
     srand((unsigned int) (tv.tv_sec ^ tv.tv_usec ^ (getpid() << 16)));
-#endif    
+#endif
 }
 
 static void die_mem(void)
 {
     logfile(LOG_ERR, _("Out of memory"));
-    
+
     exit(EXIT_FAILURE);
 }
 
@@ -89,16 +89,16 @@ int main(int argc, char *argv[])
 {
     int option_index = 0;
     int fodder;
-    
+
 #ifdef HAVE_SETLOCALE
     setlocale(LC_ALL, "");
 #endif
     bindtextdomain(PACKAGE, LOCALEDIR);
     textdomain(PACKAGE);
-    
+
     if (argc <= 1) {
         usage();
-    }        
+    }
     inet_pton(AF_INET, DEFAULT_MCASTIP, &mcastip);
     while ((fodder = getopt_long(argc, argv, GETOPT_OPTIONS, long_options,
                                  &option_index)) != -1) {
@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
             if ((interface = strdup(optarg)) == NULL) {
                 die_mem();
             }
-            break;            
+            break;
         }
         case 's': {
             if (inet_pton(AF_INET, optarg, &srcip) == 0) {
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
                 logfile(LOG_ERR, _("Invalid address: [%s]"), optarg);
                 return 1;
             }
-            break;            
+            break;
         }
         case 'v': {
             if (strtoul(optarg, NULL, 0) > 255 || strtol(optarg, NULL, 0) < 1) {
@@ -133,14 +133,14 @@ int main(int argc, char *argv[])
                 return 1;
             }
             vhid = (unsigned char) strtoul(optarg, NULL, 0);
-            break;            
-        }       
+            break;
+        }
         case 'p': {
             free(pass);
             if ((pass = strdup(optarg)) == NULL) {
                 die_mem();
             }
-            break;            
+            break;
         }
         case 'o': {
             char buf[512U];
@@ -187,11 +187,11 @@ int main(int argc, char *argv[])
         }
         case 'b': {
             advbase = (unsigned char) strtoul(optarg, NULL, 0);
-            break;            
+            break;
         }
         case 'k': {
-            advskew = (unsigned char) strtoul(optarg, NULL, 0);            
-            break;            
+            advskew = (unsigned char) strtoul(optarg, NULL, 0);
+            break;
         }
         case 'd': {
             free(downscript);
@@ -229,7 +229,7 @@ int main(int argc, char *argv[])
         }
         case 'f': {
             int n = 0;
-            
+
             if (strcasecmp(optarg, "none") == 0) {
                 no_syslog = 1;
                 break;
@@ -265,8 +265,8 @@ int main(int argc, char *argv[])
     if (no_syslog == 0) {
         openlog("ucarp", LOG_PID, syslog_facility);
     }
-#endif    
-    if (interface == NULL || *interface == 0) {        
+#endif
+    if (interface == NULL || *interface == 0) {
         interface = pcap_lookupdev(NULL);
         if (interface == NULL || *interface == 0) {
             logfile(LOG_ERR, _("You must supply a network interface"));
@@ -309,12 +309,12 @@ int main(int argc, char *argv[])
     if (docarp() != 0) {
         return 2;
     }
-    
+
 #ifndef SAVE_DESCRIPTORS
     if (no_syslog == 0) {
         closelog();
     }
-#endif    
-    
+#endif
+
     return 0;
 }

@@ -19,12 +19,12 @@ int gratuitous_arp(const int dev_desc_fd)
             0x00, 0x00, 0x00, 0x00,               /* Sender IP */
             0xff, 0xff, 0xff, 0xff, 0xff, 0xff,   /* Target MAC */
             0xff, 0xff, 0xff, 0xff                /* Target IP */
-    };    
+    };
     unsigned char *pkt;
     int rc;
 
     if (ETHER_ADDR_LEN > 6) {
-	abort();
+        abort();
     }
 
     /*
@@ -54,7 +54,7 @@ int gratuitous_arp(const int dev_desc_fd)
     memcpy(pkt + sizeof eh, arp, sizeof arp);
 
     do {
-	rc = write(dev_desc_fd, pkt, sizeof eh + sizeof arp);
+        rc = write(dev_desc_fd, pkt, sizeof eh + sizeof arp);
     } while (rc < 0 && errno == EINTR);
     if (rc < 0) {
         logfile(LOG_ERR, _("write() in garp: %s"), strerror(errno));
@@ -62,6 +62,6 @@ int gratuitous_arp(const int dev_desc_fd)
         return -1;
     }
     ALLOCA_FREE(pkt);
-    
+
     return 0;
 }

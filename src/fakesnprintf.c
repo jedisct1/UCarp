@@ -13,7 +13,7 @@
  * - double and long double types ("%f", "%Lf") .
  * - floating point frac restrictions ("%.2f") .
  * - combinations of everything ("%-8.5llo") .
- * 
+ *
  * Nothing more. Return value is <size> if an overflow occured, or the
  * copied size if no overflow occured (mostly compatible with C99
  * snprintf() behavior, except that it doesn't return any value larger
@@ -76,7 +76,7 @@ static void fakesnprintf_addstr(char **str, size_t *size, const char *pnt,
     }
     if (padlen > 0U && minuspad > 0U && padlen > maxlenc) {
         size_t maxlenp = padlen - maxlenc;
-        
+
         if (maxlenp > *size) {
             maxlenp = *size;
         }
@@ -94,7 +94,7 @@ int fakesnprintf_vsnprintf(char * const str_, const size_t size_,
     char *str;
     size_t size;
     size_t maxlen;
-    size_t padlen;    
+    size_t padlen;
     unsigned char longs;
     unsigned char zero;
     unsigned char minuspad;
@@ -117,7 +117,7 @@ int fakesnprintf_vsnprintf(char * const str_, const size_t size_,
         padlen = 0U;
         hasmaxlen = 0U;
         plussign = 0U;
-        
+
         for (;;) {
             breakpoint_nextspecial_inc:
             format++;
@@ -129,14 +129,14 @@ int fakesnprintf_vsnprintf(char * const str_, const size_t size_,
                 *str++ = '%';
                 size--;
                 goto breakpoint_next;
-	    case 'c': {
-		int val;
-		
-		val = va_arg(va, int);
-		*str++ = (char) val;
-		size--;
+            case 'c': {
+                int val;
+
+                val = va_arg(va, int);
+                *str++ = (char) val;
+                size--;
                 goto breakpoint_next;
-	    }
+            }
             case 'l': case 'L':
                 longs++;
                 goto breakpoint_nextspecial_inc;
@@ -146,7 +146,7 @@ int fakesnprintf_vsnprintf(char * const str_, const size_t size_,
             case '.':
                 format++;
                 hasmaxlen = 1U;
-                while ((unsigned char) *format >= '0' && 
+                while ((unsigned char) *format >= '0' &&
                        (unsigned char) *format <= '9') {
                     maxlen *= 10U;
                     maxlen += (*format - '0');
@@ -159,7 +159,7 @@ int fakesnprintf_vsnprintf(char * const str_, const size_t size_,
                     padlen *= 10U;
                     padlen += *format - '0';
                     format++;
-                } while ((unsigned char) *format >= '0' && 
+                } while ((unsigned char) *format >= '0' &&
                          (unsigned char) *format <= '9');
                 goto breakpoint_nextspecial_noinc;
             case '-':
@@ -169,7 +169,7 @@ int fakesnprintf_vsnprintf(char * const str_, const size_t size_,
             case '+':
                 plussign++;
                 format++;
-                goto breakpoint_nextspecial_noinc;                
+                goto breakpoint_nextspecial_noinc;
             case 's': {
                 const char *pnt;
 
@@ -291,7 +291,7 @@ int fakesnprintf_vsnprintf(char * const str_, const size_t size_,
                 }
                 if (nfrac > 0U) {
                     *valspnt++ = '.';
-                }                
+                }
                 while (nfrac > 0U) {
                     nfrac--;
                     val *= 10.0L;

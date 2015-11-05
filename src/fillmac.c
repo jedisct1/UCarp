@@ -32,7 +32,7 @@
 # define HWINFO_TYPE SOCK_PACKET
 #else
 # define HWINFO_TYPE SOCK_DGRAM
-#endif   
+#endif
 
 int fill_mac_address(void)
 {
@@ -46,7 +46,7 @@ int fill_mac_address(void)
 #ifdef SIOCGIFHWADDR
     {
         struct ifreq ifr;
-        
+
         if (strlen(interface) >= sizeof ifr.ifr_name) {
             logfile(LOG_ERR, _("Interface name too long"));
             return -1;
@@ -70,12 +70,12 @@ int fill_mac_address(void)
         memcpy(hwaddr, &ifr.ifr_hwaddr.sa_data, sizeof hwaddr);
     }
 #elif defined(HAVE_GETIFADDRS)
-    {   
+    {
         struct ifaddrs *ifas;
         struct ifaddrs *ifa;
         struct sockaddr_dl *sadl;
         struct ether_addr *ea;
-        
+
         if (getifaddrs(&ifas) != 0) {
             logfile(LOG_ERR, _("Unable to get interface address: %s"),
                     strerror(errno));
@@ -95,7 +95,7 @@ int fill_mac_address(void)
                 }
                 ea = (struct ether_addr *) LLADDR(sadl);
                 memcpy(hwaddr, ea, sizeof hwaddr);
-                
+
                 return 0;
             }
             ifa = ifa->ifa_next;
@@ -109,7 +109,7 @@ int fill_mac_address(void)
         struct lifreq *lifr;
         caddr_t *lifrspace;
         struct arpreq arpreq;
-        
+
         lifn.lifn_flags = 0;
         lifn.lifn_family = AF_INET;
         if (ioctl(s, SIOCGLIFNUM, &lifn) < 0) {
@@ -118,7 +118,7 @@ int fill_mac_address(void)
         }
         if (lifn.lifn_count <= 0) {
             logfile(LOG_ERR, _("No interface found"));
-            return -1;            
+            return -1;
         }
         lifc.lifc_family = lifn.lifn_family;
         lifc.lifc_len = lifn.lifn_count * sizeof *lifr;
@@ -128,18 +128,18 @@ int fill_mac_address(void)
             logfile(LOG_ERR, _("ioctl SIOCGLIFCONF error"));
             ALLOCA_FREE(lifrspace);
             return -1;
-        }        
+        }
         lifr = lifc.lifc_req;
-	for(;;) {
-	    if (lifn.lifn_count <= 0) {
-		logfile(LOG_ERR, _("Interface [%s] not found"), interface);
-		ALLOCA_FREE(lifrspace);
-		return -1;            		
-	    }
-	    lifn.lifn_count--;
+        for(;;) {
+            if (lifn.lifn_count <= 0) {
+                logfile(LOG_ERR, _("Interface [%s] not found"), interface);
+                ALLOCA_FREE(lifrspace);
+                return -1;
+            }
+            lifn.lifn_count--;
             if (strcmp(lifr->lifr_name, interface) == 0) {
                 break;
-            }	   
+            }
             lifr++;
         }
         memcpy(&arpreq.arp_pa, &lifr->lifr_addr, sizeof arpreq.arp_pa);
@@ -148,12 +148,12 @@ int fill_mac_address(void)
             logfile(LOG_ERR, _("Unable to get hardware info about [%s]"),
                     interface);
             return -1;
-        }       
+        }
         memcpy(hwaddr, &arpreq.arp_ha.sa_data, sizeof hwaddr);
     }
 #endif
-    
-    (void) close(s);    
-    
+
+    (void) close(s);
+
     return 0;
 }

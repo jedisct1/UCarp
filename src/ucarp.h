@@ -177,17 +177,17 @@ struct carp_softc {
     struct in6_ifaddr *sc_ia6;  /* primary iface address v6 */
     struct ip6_moptions sc_im6o;
 #endif /* INET6 */
-    
+
     enum { INIT = 0, BACKUP, MASTER }   sc_state;
 
     int sc_flags_backup;
     int sc_suppress;
-    
+
     int sc_sendad_errors;
 #define CARP_SENDAD_MAX_ERRORS  3
     int sc_sendad_success;
 #define CARP_SENDAD_MIN_SUCCESS 3
-    
+
     int sc_vhid;
     int sc_advskew;
     int sc_naddrs;
@@ -196,13 +196,13 @@ struct carp_softc {
     int sc_init_counter;
     u_int64_t sc_counter;
     int sc_delayed_arp;
-    
+
     /* authentication */
 #define CARP_HMAC_PAD   64
     unsigned char sc_key[CARP_KEY_LEN];
     unsigned char sc_pad[CARP_HMAC_PAD];
     SHA1_CTX sc_sha1;
-    
+
     struct timeval sc_ad_tmo;   /* advertisement timeout */
     struct timeval sc_md_tmo;   /* master down timeout */
     struct timeval sc_md6_tmo;  /* master down timeout */
