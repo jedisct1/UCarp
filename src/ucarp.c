@@ -156,6 +156,7 @@ int main(int argc, char *argv[])
                 logfile(LOG_ERR, _("error reading passfile %s: %s"), optarg,
                         ferror(pw) ?
                         strerror(errno) : _("unexpected end of file"));
+                fclose(pw);
                 return 1;
             }
             fclose(pw);
