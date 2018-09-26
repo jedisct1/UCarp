@@ -15,8 +15,6 @@ Strong points of the CARP protocol are: very low overhead, cryptographically
 signed messages, interoperability between different operating systems and no
 need for any dedicated extra network link between redundant hosts.
 
-Home page is http://www.ucarp.org/
-
 
         ------------------------ COMPILATION ------------------------
 
