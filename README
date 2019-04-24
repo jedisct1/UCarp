@@ -255,17 +255,3 @@ If you want to translate the software, have a look at the po/ directory.
 Copy the ucarp.pot file to <your locale name>.po and use software like Kbabel
 or Emacs to update the file.
 Better use use your local charset than UTF-8.
-
-
-      ------------------------ DOWNLOADING UCARP ------------------------
-
-
-UCARP home page is: http://www.ucarp.org/ .
-
-UCARP mailing-list: http://www.ucarp.org/ml/ .  Be sure to scroll all the way 
-down to see the UCARP mailing list info!
-
-
-Thank you, 
-
-                        -Frank DENIS "Jedi/Sector One" <j at ucarp dot org> .

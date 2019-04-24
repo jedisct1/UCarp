@@ -1,5 +1,5 @@
 AC_PREREQ(2.59)	
-AC_INIT([ucarp],[1.5.2],[bugs at ucarp dot org])
+AC_INIT([ucarp],[1.5.2])
 AC_CONFIG_SRCDIR([src/ucarp.c])
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([1.9 dist-bzip2])
@@ -284,9 +284,3 @@ AC_CONFIG_FILES(Makefile src/Makefile examples/Makefile
                 po/Makefile.in m4/Makefile )
 
 AC_OUTPUT
-
-AC_MSG_NOTICE([+--------------------------------------------------------+])
-AC_MSG_NOTICE([| You can subscribe to the UCARP users mailing-list to   |])
-AC_MSG_NOTICE([| ask for help and to stay informed of new releases.     |])
-AC_MSG_NOTICE([| Go to http://www.ucarp.org/ml/ now!                    |])
-AC_MSG_NOTICE([+--------------------------------------------------------+])
